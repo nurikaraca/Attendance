@@ -12,11 +12,11 @@ router.post('/adminLogin' , adminLogin)
 
 // teacher
 router.post('/teacherRegister' ,authenticationMiddleware, teacherRegister)
-router.post('/teacherLogin' , authenticationMiddleware,teacherLogin)
+router.post('/teacherLogin' ,teacherLogin)
 
 //student
 router.post('/studentRegister' ,authenticationMiddleware,studentRegister )
-router.post('/studentLogin' ,authenticationMiddleware,  studentLogin )
+router.post('/studentLogin' ,  studentLogin )
 
 // logout
 router.post('/logout', logout);
