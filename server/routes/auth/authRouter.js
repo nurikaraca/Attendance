@@ -1,8 +1,23 @@
 const express = require('express');
-const { register } = require('../../controllers/auth/userAuth.js');
+const { adminRegister,adminLogin } = require('../../controllers/auth/userAuth.js');
+const { teacherRegister,teacherLogin } = require('../../controllers/auth/teacherAuth.js');
+const { studentRegister, studentLogin} = require('../../controllers/auth/studentAuth.js');
+const authenticationMiddleware = require('../../middleware/authentication.js');
+const logout= require('../../controllers/auth/logout.js')
 const router = express.Router();
 
-router.post('/register', register)
-//router.post('/login', login)
+// admin 
+router.post('/adminRegister', adminRegister)
+router.post('/adminLogin' , adminLogin)
 
+// teacher
+router.post('/teacherRegister' ,authenticationMiddleware, teacherRegister)
+router.post('/teacherLogin' , authenticationMiddleware,teacherLogin)
+
+//student
+router.post('/studentRegister' ,authenticationMiddleware,studentRegister )
+router.post('/studentLogin' ,authenticationMiddleware,  studentLogin )
+
+// logout
+router.post('/logout', logout);
 module.exports=router

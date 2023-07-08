@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
     username:{
@@ -14,19 +14,14 @@ const userSchema = mongoose.Schema({
         type:String,
         required:true,
     },
-    img:{
-        type:String,
-    },
-    birthDate:{
-        type:Date,
-        required:true,
-    },
+
     role: {
         type: String,
-        default: 'admin'
+        required:true,
+       
     }
 
 
 })
 
-module.exports= mongoose.model('User' , userSchema)
+module.exports = mongoose.model('Admin', userSchema);

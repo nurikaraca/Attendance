@@ -1,32 +1,29 @@
 const Student = require('../../models/Student');
+const User = require('../../models/Admin').default
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const studentRegister = async (req,res,next) =>{
-    //öğrenciyi  user ekleyeceği için  öğrenci numarası  email yerine gelecek
-    // password  olarak da  öğrenci tcsi olacak.  belk i tabikine
-    const {studentNumber,password}=req.body
+  const {studentNumber,password}=req.body
   
     try {
        
        // studentNumber ile öğrenci mevcut  mu kontrol ediliyor 
-         const student = await Student.findOne(studentNumber)
+         const student = await Student.findOne({studentNumber:studentNumber})
          if(student) {
             return  res.status(400).json({message: 'Bu öğrenci  zaten var'})
          }
 
          //uygun şifre  kontrolü
-         if(password > 6 ) {
+         if(password < 6 ) {
             res.status(400).json({message: 'Şifre en az 6 karakter olmalıdır'})
          }
         
          // hash 
          const passwordHash = await bcrypt.hash(password,10)
 
-         
-
          // yeni  Öğrenci oluşturma 
-         const  newStudent  = await  Teacher.create({... req.body , password: passwordHash})
+         const  newStudent  = await  Student.create({... req.body , password: passwordHash})
 
          //token oluşturma
          const token = await jwt.sign({id:newStudent._id},process.env.SECRET_KEY,{ expiresIn: "1h" })
@@ -45,8 +42,8 @@ const studentRegister = async (req,res,next) =>{
 const studentLogin = async (req,res,next) =>{
     const {studentNumber,password}=req.body
 try {
-      // kullanıcı var mı yok mu  kontrol ediyor.
-      const student  = await Teacher.findOne(studentNumber) 
+      // öğrenci  var mı yok mu  kontrol ediyor.
+      const student  = await Student.findOne({studentNumber:studentNumber})
       if(!student){
         return res.status(400).json({message: "Bu Öğrenci numarasına ait bir öğrenci  bulunmamakta."})
       }
